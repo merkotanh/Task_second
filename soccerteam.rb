@@ -19,18 +19,19 @@ class Soccer_team
   end
 
   def read_league
-    @team.each do |team1, team2|             # each line == each match
-      name_score(team1, team2, :>, 3, 0)     # win = 3, lose = 0, eql =1
+    @team.each do |team1, team2|                  # each line in @team == each match
+      name_score(team1, team2, :>, 3, 0)          # win = 3, lose = 0, eql =1
       name_score(team1, team2, :==, 1, 1)
     end
-    @team = @teamh.sort_by{|k,v| v}.reverse  # sort
-    @indx = (1..@team.count).to_a            # line number for output
-    @team = @indx.zip(@team)                 # add index number
+    @team = @teamh.sort_by { |k,v| v}.reverse     # sort
+    @indx = (1..@team.count).to_a                 # line number for output
+    @team = @indx.zip(@team)                      # add index number
+
+    #@team.each.with_index { |val,index| puts "#{val}"} # output in [] :(
   
-    puts  @team.map{ |e| 
-      e[1][1]== 1 ?                          # find plural and single
-      e[0].to_s + '. ' + e[1][0].to_s + e[1][1].to_s + ' pt' : 
-      e[0].to_s + '. ' + e[1][0].to_s + e[1][1].to_s + ' pts'
+    puts  @team.map{ |e|                          # if do..end instead of {..} output'd be #<Enumerator:0x0000562d3c123328>
+      result = "#{e[0]}. #{e[1][0]}, #{e[1][1]}"  # plural or single 
+      e[1][1]== 1 ? result + ' pt' : result + ' pts'
     }
   end
 end
