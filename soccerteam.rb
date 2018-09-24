@@ -1,4 +1,6 @@
-
+#---
+#calculate the ranking table for a soccer league
+#---
 class Soccer_team
   def initialize
     @team = []
@@ -9,20 +11,17 @@ class Soccer_team
     end
   end
 
-  def name_score(tm1, tm2)
-    if tm1[/\d+/] > tm2[/\d+/]
-      @teamh[tm1[/\D+/]] += 3
-      @teamh[tm2[/\D+/]] += 0
-    end
-    if tm1[/\d+/] == tm2[/\d+/]
-      @teamh[tm1[/\D+/]] += 1
-      @teamh[tm2[/\D+/]] += 1
+  def name_score(tm1, tm2, op, sc1, sc2)
+    if tm1[/\d+/].send(op, tm2[/\d+/])
+      @teamh[tm1[/\D+/]] += sc1
+      @teamh[tm2[/\D+/]] += sc2
     end
   end
 
   def read_league
     @team.each do |team1, team2|             # each line == each match
-      name_score(team1, team2)
+      name_score(team1, team2, :>, 3, 0)     # win = 3, lose = 0, eql =1
+      name_score(team1, team2, :==, 1, 1)
     end
     @team = @teamh.sort_by{|k,v| v}.reverse  # sort
     @indx = (1..@team.count).to_a            # line number for output
